@@ -30,7 +30,7 @@ USERS_FILE = "users.json"
 
 @app.route("/")
 def index():
-    """Serve the login page. Open http://localhost:5000 in your browser."""
+    """Serve the login page. Open http://127.0.0.1:5000 in your browser.""" 
     return send_file("cpcc_login.html")
 
 

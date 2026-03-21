@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Success Lobby - CPCC</title>
+    <!-- Title of the page & html -->
+    <style>
+        /* Reset - makes all browsers look the same */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* body is the entire page */
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0d1b2a;
+            color: white;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* center the page vertically & horizontally */
+        }
+
+        /* The white box of the login - controls the border & width */
+        .login-card {
+            background: #1a2f45;
+            padding: 40px;
+            border-radius: 16px;
+            width: 360px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+
+        /* The title at the top of the card */
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #4fc3f7;
+            margin-bottom: 6px;
+        }
+
+        /* Small text below the logo */
+        .subtitle {
+            font-size: 13px;
+            color: #90a4ae;
+            margin-bottom: 30px;
+        }
+
+        .tabs {
+            display: flex;
+            background: #0d1b2a;
+            border-radius: 8px;
+            padding: 4px;
+            margin-bottom: 24px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 9px;
+            border: none;
+            background: transparent;
+            color: #90a4ae;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+
+        .tab-btn.active {
+            background: #4fc3f7;
+            color: #0d1b2a;
+        }
+
+        /* It makes the input occupy the entire width of the card */
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            border-radius: 8px;
+            border: 1px solid #2e4a63;
+            background: #0d1b2a;
+            color: white;
+            font-size: 14px;
+        }
+
+        /* What happens when you click inside an input */
+        input:focus {
+            outline: none;
+            border-color: #4fc3f7;
+        }
+
+        /* The login button */
+        .btn-login {
+            width: 100%;
+            padding: 13px;
+            background: #4fc3f7;
+            color: #0d1b2a;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 4px;
+        }
+
+        /* Button color changes when you hover over it */
+        .btn-login:hover {
+            background: #81d4fa;
+        }
+
+        /* Small terms text at the bottom */
+        .terms {
+            font-size: 12px;
+            color: #90a4ae;
+            margin-top: 20px;
+        }
+
+        /* Style for the Terms & Policy link */
+        .terms a {
+            color: #4fc3f7;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Login card - groups things and connects the div with the CSS -->
+    <div class="login-card">
+
+        <!-- Logo and college name -->
+        <div class="logo">🎓 The Success Lobby</div>
+        <div class="subtitle">Central Piedmont Community College</div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('login')">Sign In</button>
+            <button class="tab-btn" onclick="switchTab('register')">Create Account</button>
+        </div>
+
+        <!-- id="username" makes the input unique so JavaScript can find it -->
+        <div id="loginForm">
+            <input type="text" id="username" placeholder="CPCC Username (e.g. jcastillo)" />
+            <input type="password" id="password" placeholder="Password" />
+
+            <!-- onclick="login()" executes the login function when clicked -->
+            <button class="btn-login" onclick="login()">Log In</button>
+        </div>
+
+        <div id="registerForm" style="display:none;">
+            <input type="text" id="regName" placeholder="Full Name" />
+            <input type="text" id="regEmail" placeholder="CPCC Email (e.g. jdoe@email.cpcc.edu)" />
+            <input type="password" id="regPassword" placeholder="Password" />
+            <input type="password" id="regConfirm" placeholder="Confirm Password" />
+            <button class="btn-login" onclick="register()">Create Account</button>
+        </div>
+
+        <p class="terms">
+            By logging in you agree to our <a href="#">Terms & Policy</a>
+        </p>
+
+    </div>
+
+    <script>
+        /* function login() defines what happens when you click the button.
+           getElementById searches the input by its id and reads what you typed.
+           If the box is empty it shows an alert and stops.
+           If both fields are filled it welcomes the user by name. */
+        function login() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+
+            /* check if either field is empty */
+            if (user === '' || pass === '') {
+                alert('Please enter your username and password.');
+                return;
+            }
+
+            /* if everything is ok, welcome the user */
+            fetch('http://127.0.0.1:5000/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: user, password: pass })
+            })
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+                if (data.success) {
+                    alert('Welcome, ' + data.name + '!');
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(function() {
+                alert('Cannot connect to the server. Is app.py running?');
+            });
+        }
+
+        function register() {
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const confirm = document.getElementById('regConfirm').value;
+
+            if (name === '' || email === '' || password === '' || confirm === '') {
+                alert('Please fill in all fields.');
+                return;
+            }
+
+            fetch('http://127.0.0.1:5000/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: name, email: email, password: password, confirm: confirm })
+            })
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+                if (data.success) {
+                    alert(data.message);
+                    switchTab('login');
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(function() {
+                alert('Cannot connect to the server. Is app.py running?');
+            });
+        }
+
+        function switchTab(tab) {
+            if (tab === 'login') {
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('registerForm').style.display = 'none';
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+                document.querySelectorAll('.tab-btn')[1].classList.remove('active');
+            } else {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('registerForm').style.display = 'block';
+                document.querySelectorAll('.tab-btn')[0].classList.remove('active');
+                document.querySelectorAll('.tab-btn')[1].classList.add('active');
+            }
+        }
+    </script>
+
+</body>
+</html>

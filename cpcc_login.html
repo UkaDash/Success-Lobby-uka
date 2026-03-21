@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Success Lobby – CPCC</title>
+
+  <style>
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0d1b2a;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ── Auth card ───────────────────────────────────────────── */
+    .login-card {
+      background: #1a2f45;
+      padding: 40px;
+      border-radius: 16px;
+      width: 360px;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+
+    .logo     { font-size: 28px; font-weight: bold; color: #4fc3f7; margin-bottom: 6px; }
+    .subtitle { font-size: 13px; color: #90a4ae; margin-bottom: 24px; }
+
+    /* ── Tabs ────────────────────────────────────────────────── */
+    .tabs {
+      display: flex;
+      background: #0d1b2a;
+      border-radius: 8px;
+      padding: 4px;
+      margin-bottom: 24px;
+    }
+    .tab-btn {
+      flex: 1; padding: 9px; border: none;
+      background: transparent; color: #90a4ae;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 13px; font-weight: 600;
+      cursor: pointer; border-radius: 6px;
+      transition: all 0.2s;
+    }
+    .tab-btn.active { background: #4fc3f7; color: #0d1b2a; }
+
+    /* ── Inputs ──────────────────────────────────────────────── */
+    input {
+      width: 100%; padding: 12px 16px; margin-bottom: 14px;
+      border-radius: 8px; border: 1px solid #2e4a63;
+      background: #0d1b2a; color: white;
+      font-size: 14px; font-family: 'Segoe UI', sans-serif;
+    }
+    input:focus        { outline: none; border-color: #4fc3f7; }
+    input.field-error  { border-color: #ef5350; }
+
+    .email-hint {
+      font-size: 11px; color: #90a4ae;
+      text-align: left; margin-top: -10px; margin-bottom: 14px;
+    }
+    .email-hint span { color: #4fc3f7; font-weight: 600; }
+
+    /* ── Alert box ───────────────────────────────────────────── */
+    .alert {
+      display: none; text-align: left;
+      padding: 10px 14px; border-radius: 8px;
+      font-size: 13px; margin-bottom: 14px; line-height: 1.5;
+    }
+    .alert.show          { display: block; }
+    .alert.alert-error   { background: rgba(239,83,80,0.15);  border: 1px solid rgba(239,83,80,0.4);  color: #ef9a9a; }
+    .alert.alert-success { background: rgba(79,195,247,0.12); border: 1px solid rgba(79,195,247,0.35); color: #81d4fa; }
+
+    .alert-link {
+      color: #4fc3f7; cursor: pointer; font-weight: 700;
+      background: none; border: none;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: inherit; padding: 0; text-decoration: underline;
+    }
+
+    /* ── Button ──────────────────────────────────────────────── */
+    .btn-primary {
+      width: 100%; padding: 13px;
+      background: #4fc3f7; color: #0d1b2a;
+      border: none; border-radius: 8px;
+      font-size: 16px; font-weight: bold;
+      font-family: 'Segoe UI', sans-serif;
+      cursor: pointer; margin-top: 4px;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover    { background: #81d4fa; }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .terms      { font-size: 12px; color: #90a4ae; margin-top: 20px; }
+    .terms a    { color: #4fc3f7; text-decoration: none; }
+
+    /* ── Dashboard ───────────────────────────────────────────── */
+    #dashboard { display: none; width: 100%; }
+
+    .dash-header {
+      background: #1a2f45; padding: 16px 28px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: fixed; top: 0; left: 0; right: 0;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.4); z-index: 100;
+    }
+    .dash-logo       { font-size: 18px; font-weight: bold; color: #4fc3f7; }
+    .dash-right      { display: flex; align-items: center; gap: 14px; }
+    .dash-user-name  { font-size: 14px; color: #cfd8dc; }
+    .dash-user-email { font-size: 11px; color: #90a4ae; }
+
+    .btn-logout {
+      padding: 7px 16px; background: transparent;
+      border: 1px solid #4fc3f7; border-radius: 8px;
+      color: #4fc3f7; font-size: 13px; cursor: pointer;
+      font-family: 'Segoe UI', sans-serif; transition: background 0.2s;
+    }
+    .btn-logout:hover { background: rgba(79,195,247,0.1); }
+
+    .dash-body     { padding-top: 80px; min-height: 100vh; background: #0d1b2a; }
+    .dash-hero     { padding: 48px 36px 24px; max-width: 860px; margin: 0 auto; }
+    .dash-greeting { font-size: 30px; font-weight: bold; color: white; margin-bottom: 6px; }
+    .dash-greeting span { color: #4fc3f7; }
+    .dash-tagline  { font-size: 14px; color: #90a4ae; }
+
+    .status-bar {
+      background: rgba(79,195,247,0.08);
+      border: 1px solid rgba(79,195,247,0.25);
+      border-radius: 10px; padding: 12px 18px;
+      display: flex; align-items: center; gap: 10px;
+      max-width: 788px; margin: 16px auto 24px;
+    }
+    .status-dot {
+      width: 8px; height: 8px; background: #4fc3f7;
+      border-radius: 50%; flex-shrink: 0; animation: pulse 2s infinite;
+    }
+    .status-text { color: #81d4fa; font-size: 13px; font-weight: 500; }
+
+    .dash-cards {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 18px; padding: 0 36px 40px;
+      max-width: 860px; margin: 0 auto;
+    }
+    .dash-card {
+      background: #1a2f45; border: 1px solid #2e4a63;
+      border-radius: 14px; padding: 24px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .dash-card:hover  { border-color: #4fc3f7; transform: translateY(-2px); }
+    .dash-card-icon   { font-size: 28px; margin-bottom: 12px; }
+    .dash-card-title  { font-size: 15px; font-weight: 600; color: white; margin-bottom: 6px; }
+    .dash-card-desc   { font-size: 13px; color: #90a4ae; line-height: 1.6; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    @media (max-width: 640px) {
+      .dash-cards    { grid-template-columns: 1fr; padding: 0 20px 36px; }
+      .dash-hero     { padding: 36px 20px 20px; }
+      .dash-greeting { font-size: 22px; }
+      .status-bar    { margin: 12px 20px 20px; }
+      .dash-header   { padding: 12px 16px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ── Auth panel ───────────────────────────────────────────── -->
+  <div id="authPanel">
+    <div class="login-card">
+
+      <div class="logo">🎓 The Success Lobby</div>
+      <div class="subtitle">Central Piedmont Community College</div>
+
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('login')">Sign In</button>
+        <button class="tab-btn"        onclick="switchTab('register')">Create Account</button>
+      </div>
+
+      <!-- Sign In -->
+      <div id="loginForm">
+        <div id="loginAlert" class="alert"></div>
+        <input type="email"    id="loginEmail"    placeholder="CPCC Email (e.g. jdoe@email.cpcc.edu)" />
+        <input type="password" id="loginPassword" placeholder="Password" />
+        <button class="btn-primary" id="loginBtn" onclick="handleLogin()">Log In</button>
+      </div>
+
+      <!-- Create Account -->
+      <div id="registerForm" style="display:none;">
+        <div id="registerAlert" class="alert"></div>
+        <input type="text"     id="regName"     placeholder="Full Name" />
+        <input type="email"    id="regEmail"    placeholder="CPCC Email (e.g. jdoe@email.cpcc.edu)" />
+        <div class="email-hint">
+          ⚠ Must end with <span>@cpcc.edu</span> or <span>@email.cpcc.edu</span>
+        </div>
+        <input type="password" id="regPassword" placeholder="Password (min. 6 characters)" />
+        <input type="password" id="regConfirm"  placeholder="Confirm Password" />
+        <button class="btn-primary" id="registerBtn" onclick="handleRegister()">Create Account</button>
+      </div>
+
+      <p class="terms">By logging in you agree to our <a href="#">Terms &amp; Policy</a></p>
+    </div>
+  </div>
+
+
+  <!-- ── Dashboard ────────────────────────────────────────────── -->
+  <div id="dashboard">
+    <header class="dash-header">
+      <div class="dash-logo">🎓 The Success Lobby</div>
+      <div class="dash-right">
+        <div>
+          <div class="dash-user-name"  id="dashName">—</div>
+          <div class="dash-user-email" id="dashEmail">—</div>
+        </div>
+        <button class="btn-logout" onclick="handleLogout()">Log Out</button>
+      </div>
+    </header>
+
+    <div class="dash-body">
+      <div class="dash-hero">
+        <div class="dash-greeting">Welcome back, <span id="dashFirstName">Student</span>! 👋</div>
+        <div class="dash-tagline">You are signed in to your CPCC student dashboard.</div>
+      </div>
+
+      <div class="status-bar">
+        <div class="status-dot"></div>
+        <div class="status-text">✅ Successfully logged in as a verified CPCC student.</div>
+      </div>
+
+      <div class="dash-cards">
+        <div class="dash-card">
+          <div class="dash-card-icon">📚</div>
+          <div class="dash-card-title">My Courses</div>
+          <div class="dash-card-desc">View enrolled courses, syllabi, and class schedules.</div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-icon">📊</div>
+          <div class="dash-card-title">Grades &amp; Progress</div>
+          <div class="dash-card-desc">Check your current grades, GPA, and academic reports.</div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-icon">📅</div>
+          <div class="dash-card-title">Schedule</div>
+          <div class="dash-card-desc">View your weekly class schedule and campus events.</div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-icon">💳</div>
+          <div class="dash-card-title">Financial Aid</div>
+          <div class="dash-card-desc">Manage tuition, grants, scholarships, and billing.</div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-icon">🏛️</div>
+          <div class="dash-card-title">Library</div>
+          <div class="dash-card-desc">Access digital resources, databases, and study rooms.</div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-icon">⚙️</div>
+          <div class="dash-card-title">Account Settings</div>
+          <div class="dash-card-desc">Update your profile, password, and notifications.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    // ── Points to your Flask server ──────────────────────────────
+    const API = "http://localhost:5000/api";
+
+    // ── Tab switcher ─────────────────────────────────────────────
+    function switchTab(tab) {
+      document.querySelectorAll(".tab-btn").forEach((btn, i) =>
+        btn.classList.toggle("active", (tab === "login") === (i === 0))
+      );
+      document.getElementById("loginForm").style.display    = tab === "login"    ? "block" : "none";
+      document.getElementById("registerForm").style.display = tab === "register" ? "block" : "none";
+      clearAlerts();
+    }
+
+    // ── Show / hide alert banners ─────────────────────────────────
+    function showAlert(id, type, html) {
+      const el = document.getElementById(id);
+      el.className = `alert alert-${type} show`;
+      el.innerHTML = (type === "error" ? "⚠️ " : "✅ ") + html;
+    }
+    function clearAlerts() {
+      document.querySelectorAll(".alert").forEach(a => a.className = "alert");
+    }
+
+    // ── Red border on bad inputs ──────────────────────────────────
+    function clearFieldErrors(...ids) {
+      ids.forEach(id => document.getElementById(id).classList.remove("field-error"));
+    }
+
+    // ── Disable button while waiting ──────────────────────────────
+    function setLoading(btnId, loading, label) {
+      const btn = document.getElementById(btnId);
+      btn.disabled    = loading;
+      btn.textContent = loading ? "Please wait…" : label;
+    }
+
+    // ── LOGIN ─────────────────────────────────────────────────────
+    async function handleLogin() {
+      clearAlerts();
+      clearFieldErrors("loginEmail", "loginPassword");
+
+      const email    = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value;
+
+      if (!email || !password) {
+        showAlert("loginAlert", "error", "Please enter your email and password.");
+        return;
+      }
+
+      setLoading("loginBtn", true, "Log In");
+
+      try {
+        const res  = await fetch(`${API}/login`, {
+          method:  "POST",
+          headers: { "Content-Type": "application/json" },
+          body:    JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          launchDashboard(data);
+        } else {
+          showAlert("loginAlert", "error",
+            data.hint === "register"
+              ? `${data.message} <button class="alert-link" onclick="switchTab('register')">Create account →</button>`
+              : data.message
+          );
+        }
+      } catch {
+        showAlert("loginAlert", "error", "Cannot connect to the server. Is app.py running?");
+      }
+
+      setLoading("loginBtn", false, "Log In");
+    }
+
+    // ── REGISTER ──────────────────────────────────────────────────
+    async function handleRegister() {
+      clearAlerts();
+      clearFieldErrors("regName", "regEmail", "regPassword", "regConfirm");
+
+      const name     = document.getElementById("regName").value.trim();
+      const email    = document.getElementById("regEmail").value.trim();
+      const password = document.getElementById("regPassword").value;
+      const confirm  = document.getElementById("regConfirm").value;
+
+      if (!name || !email || !password || !confirm) {
+        showAlert("registerAlert", "error", "Please fill in all fields.");
+        return;
+      }
+
+      setLoading("registerBtn", true, "Create Account");
+
+      try {
+        const res  = await fetch(`${API}/register`, {
+          method:  "POST",
+          headers: { "Content-Type": "application/json" },
+          body:    JSON.stringify({ name, email, password, confirm })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          showAlert("registerAlert", "success",
+            `${data.message} <button class="alert-link" onclick="switchTab('login')">Sign in now →</button>`
+          );
+          ["regName","regEmail","regPassword","regConfirm"]
+            .forEach(id => document.getElementById(id).value = "");
+        } else {
+          showAlert("registerAlert", "error",
+            data.hint === "login"
+              ? `${data.message} <button class="alert-link" onclick="switchTab('login')">Sign in instead →</button>`
+              : data.message
+          );
+        }
+      } catch {
+        showAlert("registerAlert", "error", "Cannot connect to the server. Is app.py running?");
+      }
+
+      setLoading("registerBtn", false, "Create Account");
+    }
+
+    // ── Show dashboard after login ────────────────────────────────
+    function launchDashboard(data) {
+      document.getElementById("authPanel").style.display = "none";
+      document.getElementById("dashboard").style.display = "block";
+      document.body.style.alignItems = "flex-start";
+
+      document.getElementById("dashName").textContent      = data.name;
+      document.getElementById("dashEmail").textContent     = data.email;
+      document.getElementById("dashFirstName").textContent = data.name.split(" ")[0];
+    }
+
+    // ── Logout ────────────────────────────────────────────────────
+    function handleLogout() {
+      document.getElementById("dashboard").style.display  = "none";
+      document.getElementById("authPanel").style.display  = "flex";
+      document.body.style.alignItems = "center";
+      document.getElementById("loginEmail").value    = "";
+      document.getElementById("loginPassword").value = "";
+      clearAlerts();
+      switchTab("login");
+    }
+
+    // ── Press Enter to submit ─────────────────────────────────────
+    document.addEventListener("keydown", e => {
+      if (e.key !== "Enter") return;
+      if (document.getElementById("loginForm").style.display !== "none") {
+        handleLogin();
+      } else {
+        handleRegister();
+      }
+    });
+  </script>
+
+</body>
+</html>

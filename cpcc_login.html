@@ -183,7 +183,8 @@
             .then(function(res) { return res.json(); })
             .then(function(data) {
                 if (data.success) {
-                    alert('Welcome, ' + data.name + '!');
+                    localStorage.setItem('cpcc-user', data.name);
+                    window.location.href = 'quiz.html';
                 } else {
                     alert(data.message);
                 }

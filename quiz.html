@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Success Lobby - Profile Setup</title>
+    <!-- Quiz page - collects student info for better matching -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap');
+
+        /* Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #050d1a;
+            color: white;
+            min-height: 100vh;
+            padding: 30px 20px;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            font-weight: 900;
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+            letter-spacing: 2px;
+        }
+
+        /* Quiz card container */
+        .quiz-card {
+            max-width: 600px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #0a1628, #0d2137);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
+        }
+
+        /* Progress bar at the top */
+        .progress-container {
+            margin-bottom: 24px;
+        }
+
+        .progress-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            color: #90a4ae;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            height: 6px;
+        }
+
+        /* Filled part of progress bar */
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ffff, #0066ff);
+            border-radius: 4px;
+            box-shadow: 0 0 8px #00ffff;
+            transition: width 0.4s ease;
+        }
+
+        /* Question title */
+        .question-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #00ffff;
+            margin-bottom: 8px;
+            text-shadow: 0 0 8px rgba(0,255,255,0.3);
+        }
+
+        .question-subtitle {
+            font-size: 14px;
+            color: #90a4ae;
+            margin-bottom: 24px;
+        }
+
+        /* Options grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        /* Each option button */
+        .option-btn {
+            padding: 14px 16px;
+            background: rgba(0, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #cdd9e5;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+            letter-spacing: 0.5px;
+        }
+
+        .option-btn:hover {
+            border-color: #00ffff;
+            color: white;
+            background: rgba(0, 255, 255, 0.1);
+        }
+
+        /* Selected option glows */
+        .option-btn.selected {
+            border-color: #00ffff;
+            background: rgba(0, 255, 255, 0.15);
+            color: #00ffff;
+            box-shadow: 0 0 10px rgba(0,255,255,0.2);
+        }
+
+        /* For questions with text input */
+        .text-input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            background: rgba(0, 255, 255, 0.05);
+            color: white;
+            font-size: 14px;
+            font-family: 'Rajdhani', sans-serif;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: #00ffff;
+            box-shadow: 0 0 12px rgba(0,255,255,0.2);
+        }
+
+        /* Next button */
+        .btn-next {
+            width: 100%;
+            padding: 14px;
+            background: transparent;
+            border: 1px solid #00ffff;
+            color: #00ffff;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 2px;
+            transition: all 0.2s;
+        }
+
+        .btn-next:hover {
+            background: rgba(0, 255, 255, 0.15);
+            box-shadow: 0 0 16px rgba(0,255,255,0.3);
+        }
+
+        /* Avatar preview */
+        .avatar-preview {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .avatar-preview img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(0,255,255,0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">⬡ SUCCESS LOBBY</div>
+    </div>
+
+    <!-- Quiz card - all questions show here -->
+    <div class="quiz-card">
+
+        <!-- Avatar preview at the top -->
+        <div class="avatar-preview">
+            <img id="avatar-img" src="" alt="Your avatar" />
+        </div>
+
+        <!-- Progress bar -->
+        <div class="progress-container">
+            <div class="progress-text" id="progress-text">QUESTION 1 OF 4</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 25%"></div>
+            </div>
+        </div>
+
+        <!-- Question title and subtitle -->
+        <div class="question-title" id="question-title">HELLO! TELL US ABOUT YOU</div>
+        <div class="question-subtitle" id="question-subtitle">What is your main goal at CPCC?</div>
+
+        <!-- Options appear here - created by JavaScript -->
+        <div class="options-grid" id="options-container"></div>
+
+        <!-- Text input for open questions -->
+        <input 
+            class="text-input" 
+            id="text-input" 
+            type="text" 
+            placeholder="Type your answer..."
+            style="display:none;"
+        />
+
+        <!-- Next / Finish button -->
+        <button class="btn-next" id="btn-next" onclick="nextQuestion()">
+            NEXT →
+        </button>
+
+    </div>
+
+    <script>
+        /* Load the username and set the pixel art avatar */
+        const userName = localStorage.getItem('cpcc-user') || 'student';
+        document.getElementById('avatar-img').src = `https://api.dicebear.com/7.x/pixel-art/svg?seed=${userName}`;
+
+        /* Saves the answers as the student goes through the quiz */
+        const answers = {};
+
+        /* Current question index */
+        let current = 0;
+
+        /* All quiz questions */
+        const questions = [
+            {
+                id: 'goal',
+                title: 'HELLO! TELL US ABOUT YOU',
+                subtitle: 'What is your main goal at CPCC?',
+                type: 'options',
+                options: [
+                    '📚 Find a study partner',
+                    '🤝 Professional networking',
+                    '👥 Make new friends',
+                    '🎯 Join a study group'
+                ]
+            },
+            {
+                id: 'style',
+                title: 'YOUR STUDY STYLE',
+                subtitle: 'How do you prefer to study?',
+                type: 'options',
+                options: [
+                    '🔇 In silence',
+                    '💬 Talking through problems',
+                    '👥 In a group',
+                    '🎧 With music'
+                ]
+            },
+            {
+                id: 'schedule',
+                title: 'YOUR SCHEDULE',
+                subtitle: 'When are you usually available to study?',
+                type: 'options',
+                options: [
+                    '🌅 Morning (8am - 12pm)',
+                    '☀️ Afternoon (12pm - 5pm)',
+                    '🌙 Evening (5pm - 9pm)',
+                    '📅 Weekends only'
+                ]
+            },
+            {
+                id: 'courses',
+                title: 'YOUR COURSES',
+                subtitle: 'Which course do you need the most help with?',
+                type: 'text',
+                placeholder: 'e.g. MAT-171, CSC-151...'
+            }
+        ];
+
+        /* Renders the current question on screen */
+        function renderQuestion() {
+            const q = questions[current];
+
+            /* Update progress bar */
+            const percent = ((current + 1) / questions.length) * 100;
+            document.getElementById('progress-fill').style.width = percent + '%';
+            document.getElementById('progress-text').textContent = 
+                `QUESTION ${current + 1} OF ${questions.length}`;
+
+            /* Update question text */
+            document.getElementById('question-title').textContent = q.title;
+            document.getElementById('question-subtitle').textContent = q.subtitle;
+
+            const optionsContainer = document.getElementById('options-container');
+            const textInput = document.getElementById('text-input');
+            const btnNext = document.getElementById('btn-next');
+
+            /* Show options or text input depending on question type */
+            if (q.type === 'options') {
+                optionsContainer.style.display = 'grid';
+                textInput.style.display = 'none';
+
+                /* Create option buttons */
+                optionsContainer.innerHTML = '';
+                q.options.forEach(option => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.textContent = option;
+
+                    /* When you click an option it gets selected */
+                    btn.onclick = () => {
+                        document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+                        btn.classList.add('selected');
+                        answers[q.id] = option;
+                    };
+
+                    optionsContainer.appendChild(btn);
+                });
+
+            } else {
+                /* Text input question */
+                optionsContainer.style.display = 'none';
+                textInput.style.display = 'block';
+                textInput.placeholder = q.placeholder;
+                textInput.value = answers[q.id] || '';
+            }
+
+            /* Change button text on last question */
+            if (current === questions.length - 1) {
+                btnNext.textContent = 'FINISH SETUP ✓';
+            } else {
+                btnNext.textContent = 'NEXT →';
+            }
+        }
+
+        /* Goes to the next question or finishes the quiz */
+        function nextQuestion() {
+            const q = questions[current];
+
+            /* Save text input answer */
+            if (q.type === 'text') {
+                answers[q.id] = document.getElementById('text-input').value;
+            }
+
+            /* Check if question was answered */
+            if (!answers[q.id] || answers[q.id].trim() === '') {
+                alert('Please select or type an answer before continuing!');
+                return;
+            }
+
+            /* If last question, save and go to lobby */
+            if (current === questions.length - 1) {
+                localStorage.setItem('cpcc-profile', JSON.stringify(answers));
+                alert('⚡ Profile saved! Welcome to The Success Lobby!');
+                window.location.href = 'Lobby.html';
+                return;
+            }
+
+            /* Go to next question */
+            current++;
+            renderQuestion();
+        }
+
+        /* Load the first question when page opens */
+        renderQuestion();
+    </script>
+
+</body>
+</html>

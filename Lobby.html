@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Success Lobby - CPCC</title>
+    <!-- Lobby page - cyberpunk/neon gaming style -->
+    <style>
+        /* Import a futuristic font from Google */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap');
+
+        /* Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* Dark cyberpunk background */
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #050d1a;
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+            /* Animated grid background */
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* ── HEADER ── */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        /* Neon glowing logo */
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            font-weight: 900;
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+            letter-spacing: 2px;
+        }
+
+        .user-tag {
+            font-size: 13px;
+            color: #00ffff;
+            border: 1px solid #00ffff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            box-shadow: 0 0 8px rgba(0,255,255,0.3);
+        }
+
+        /* ── PLAYER CARD ── */
+        /* Shows the student's level, XP and badges */
+        .player-card {
+            background: linear-gradient(135deg, #0a1628, #0d2137);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* Big avatar circle with level */
+        .avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00ffff, #0066ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 22px;
+            font-weight: 900;
+            color: #050d1a;
+            box-shadow: 0 0 16px rgba(0, 255, 255, 0.5);
+            flex-shrink: 0;
+        }
+
+        .player-info { flex: 1; min-width: 200px; }
+
+        .player-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .player-level {
+            font-size: 13px;
+            color: #00ffff;
+            margin-bottom: 10px;
+        }
+
+        /* XP progress bar */
+        .xp-bar-container {
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            height: 8px;
+            width: 100%;
+            margin-bottom: 4px;
+        }
+
+        /* The filled part of the XP bar - glows neon */
+        .xp-bar-fill {
+            height: 100%;
+            width: 65%;
+            background: linear-gradient(90deg, #00ffff, #0066ff);
+            border-radius: 4px;
+            box-shadow: 0 0 8px #00ffff;
+        }
+
+        .xp-text {
+            font-size: 11px;
+            color: #90a4ae;
+        }
+
+        /* Badges row like first login, 3 sessions, top helper*/
+        .badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* Each badge is a glowing pill */
+        .badge {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-cyan {
+            background: rgba(0, 255, 255, 0.15);
+            border: 1px solid #00ffff;
+            color: #00ffff;
+            box-shadow: 0 0 6px rgba(0,255,255,0.3);
+        }
+
+        .badge-purple {
+            background: rgba(150, 0, 255, 0.15);
+            border: 1px solid #9600ff;
+            color: #c77dff;
+            box-shadow: 0 0 6px rgba(150,0,255,0.3);
+        }
+
+        .badge-gold {
+            background: rgba(255, 200, 0, 0.15);
+            border: 1px solid #ffc800;
+            color: #ffc800;
+            box-shadow: 0 0 6px rgba(255,200,0,0.3);
+        }
+
+        /* ── SEARCH BAR ── */
+        .search-bar {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            background: rgba(0, 255, 255, 0.05);
+            color: white;
+            font-size: 14px;
+            font-family: 'Rajdhani', sans-serif;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: #00ffff;
+            box-shadow: 0 0 12px rgba(0,255,255,0.2);
+        }
+
+        /* ── SECTION TITLE (active lobbies) ── */
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: #00ffff;
+            margin-bottom: 16px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* ── COURSE CARDS GRID ── */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        /* Each course card - dark with neon border */
+        .course-card {
+            background: linear-gradient(135deg, #0a1628, #0d2137);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Neon glow on hover */
+        .course-card:hover {
+            border-color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Glowing accent line on the left of each card */
+        .course-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #00ffff, #0066ff);
+            box-shadow: 0 0 8px #00ffff;
+        }
+
+        .course-code {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: #00ffff;
+            margin-bottom: 4px;
+            text-shadow: 0 0 8px rgba(0,255,255,0.5);
+        }
+
+        .course-name {
+            font-size: 14px;
+            color: #cdd9e5;
+            margin-bottom: 14px;
+        }
+
+        /* Bottom row of the card */
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Green dot + student count */
+        .students-count {
+            font-size: 13px;
+            color: #90a4ae;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .active-dot {
+    width: 8px;
+    height: 8px;
+    background: #00ff88;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #00ff88;
+    animation: pulse 2s infinite;
+}
+
+        /* Pulse animation for the green dot */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* XP reward shown on each card */
+        .xp-reward {
+            font-size: 12px;
+            color: #ffc800;
+            font-weight: 600;
+        }
+
+        /* JOIN button inside the card */
+        .btn-join {
+            width: 100%;
+            margin-top: 14px;
+            padding: 10px;
+            background: transparent;
+            border: 1px solid #00ffff;
+            color: #00ffff;
+            border-radius: 6px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 2px;
+            transition: all 0.2s;
+        }
+
+        /* Button fills with neon on hover */
+        .btn-join:hover {
+            background: rgba(0, 255, 255, 0.15);
+            box-shadow: 0 0 12px rgba(0,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top bar with logo and username -->
+    <div class="header">
+        <div class="logo">⬡ SUCCESS LOBBY</div>
+        <div class="user-tag"><span class="active-dot"></span> <span id="display-user">STUDENT</span></div>
+    </div>
+
+    <!-- Player stats card - level, XP bar, badges -->
+    <div class="player-card">
+      <img id="avatar-initial" style="width:64px; height:64px; border-radius:50%; box-shadow: 0 0 16px rgba(0,255,255,0.5);" />
+
+        <div class="player-info">
+           <div class="player-name" id="player-name">
+    <span class="active-dot"></span> STUDENT
+</div>
+            <div class="player-level">⚡ LEVEL 3 — Study Apprentice</div>
+            <!-- XP progress bar -->
+            <div class="xp-bar-container">
+                <div class="xp-bar-fill"></div>
+            </div>
+            <div class="xp-text">650 / 1000 XP to next level</div>
+        </div>
+
+        <!-- Achievement badges -->
+        <div class="badges">
+            <span class="badge badge-cyan">🎯 First Login</span>
+            <span class="badge badge-purple">📚 3 Sessions</span>
+            <span class="badge badge-gold">⭐ Top Helper</span>
+        </div>
+    </div>
+
+    <!-- Search bar -->
+    <input
+        class="search-bar"
+        type="text"
+        placeholder="🔍  SEARCH COURSE CODE OR NAME..."
+        oninput="filterCourses(this.value)"
+    />
+
+    <div class="section-title">// Active Lobbies</div>
+
+    <!-- Course cards - created by JavaScript -->
+    <div class="courses-grid" id="courses-grid"></div>
+
+    <script>
+        /* Get the username saved during login */
+        const userName = localStorage.getItem('cpcc-user') || 'STUDENT';
+        const displayName = userName.toUpperCase();
+
+        /* Show the username in the header and player card */
+        document.getElementById('display-user').textContent = displayName;
+        document.getElementById('player-name').textContent = displayName;
+
+        /* Show first letter of username in the avatar circle */
+       document.getElementById('avatar-initial').src = `https://api.dicebear.com/7.x/pixel-art/svg?seed=${userName}`;
+
+        /* List of CPCC courses available */
+        const courses = [
+            { code: 'CSC-151', name: 'Java Programming', students: 4, xp: 120 },
+            { code: 'MAT-171', name: 'Precalculus Algebra', students: 7, xp: 150 },
+            { code: 'ENG-111', name: 'Writing & Inquiry', students: 3, xp: 100 },
+            { code: 'BUS-110', name: 'Introduction to Business', students: 5, xp: 110 },
+            { code: 'PSY-150', name: 'General Psychology', students: 6, xp: 130 },
+            { code: 'ACC-120', name: 'Principles of Accounting', students: 2, xp: 140 },
+        ];
+
+        /* Creates a card for each course */
+        function renderCourses(list) {
+            const grid = document.getElementById('courses-grid');
+            grid.innerHTML = '';
+
+            /* If no courses match the search, show a message */
+            if (list.length === 0) {
+                grid.innerHTML = '<p style="color:#90a4ae; grid-column:1/-1;">No lobbies found.</p>';
+                return;
+            }
+
+            list.forEach(course => {
+                grid.innerHTML += `
+                    <div class="course-card">
+                        <div class="course-code">${course.code}</div>
+                        <div class="course-name">${course.name}</div>
+                        <div class="card-footer">
+                            <div class="students-count">
+                                <div class="active-dot"></div>
+                                ${course.students} online
+                            </div>
+                            <div class="xp-reward">+${course.xp} XP</div>
+                        </div>
+                        <button class="btn-join" onclick="joinLobby('${course.code}')">
+                            ENTER LOBBY
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        /* Filters courses as you type in the search bar */
+        function filterCourses(query) {
+            const filtered = courses.filter(c =>
+                c.code.toLowerCase().includes(query.toLowerCase()) ||
+                c.name.toLowerCase().includes(query.toLowerCase())
+            );
+            renderCourses(filtered);
+        }
+
+        /* What happens when you click ENTER LOBBY */
+       function joinLobby(code) {
+    localStorage.setItem('current-course', code);
+    window.location.href = 'room.html';
+}
+        /* Load the courses when the page opens */
+        renderCourses(courses);
+    </script>
+
+</body>
+</html>

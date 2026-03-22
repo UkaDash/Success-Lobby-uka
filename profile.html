@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Success Lobby - Student Profile</title>
+    <!-- Profile page - shows student info when you click CONNECT -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap');
+
+        /* Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #050d1a;
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            font-weight: 900;
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+            letter-spacing: 2px;
+        }
+
+        .btn-back {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            color: #00ffff;
+            border: 1px solid #00ffff;
+            background: transparent;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            letter-spacing: 2px;
+            transition: all 0.2s;
+        }
+
+        .btn-back:hover {
+            background: rgba(0, 255, 255, 0.15);
+            box-shadow: 0 0 10px rgba(0,255,255,0.3);
+        }
+
+        /* Main profile card */
+        .profile-card {
+            max-width: 500px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #0a1628, #0d2137);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
+        }
+
+        /* Avatar and name at the top */
+        .profile-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .profile-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(0,255,255,0.5);
+            margin-bottom: 14px;
+        }
+
+        .profile-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .profile-level {
+            font-size: 14px;
+            color: #00ffff;
+            margin-bottom: 12px;
+        }
+
+        /* Compatibility score */
+        .compatibility {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.15);
+            border: 1px solid #00ff88;
+            color: #00ff88;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            box-shadow: 0 0 8px rgba(0,255,136,0.3);
+        }
+
+        /* Section divider */
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            color: #00ffff;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            margin-top: 24px;
+        }
+
+        /* Info rows */
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: rgba(0, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 255, 0.1);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .info-icon {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .info-text {
+            font-size: 14px;
+            color: #cdd9e5;
+        }
+
+        .info-label {
+            font-size: 11px;
+            color: #90a4ae;
+            margin-bottom: 2px;
+        }
+
+        /* Badges row */
+        .badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .badge {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .badge-cyan {
+            background: rgba(0, 255, 255, 0.15);
+            border: 1px solid #00ffff;
+            color: #00ffff;
+        }
+
+        .badge-gold {
+            background: rgba(255, 200, 0, 0.15);
+            border: 1px solid #ffc800;
+            color: #ffc800;
+        }
+
+        /* Connect button */
+        .btn-connect {
+            width: 100%;
+            margin-top: 24px;
+            padding: 14px;
+            background: linear-gradient(90deg, rgba(0,255,255,0.2), rgba(0,102,255,0.2));
+            border: 1px solid #00ffff;
+            color: #00ffff;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 2px;
+            transition: all 0.2s;
+        }
+
+        .btn-connect:hover {
+            background: linear-gradient(90deg, rgba(0,255,255,0.3), rgba(0,102,255,0.3));
+            box-shadow: 0 0 20px rgba(0,255,255,0.3);
+        }
+
+        /* Success message after connecting */
+        .success-msg {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid #00ff88;
+            border-radius: 8px;
+        }
+
+        .success-msg .xp-gain {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 22px;
+            color: #00ff88;
+            text-shadow: 0 0 10px #00ff88;
+            margin-bottom: 6px;
+        }
+
+        .success-msg p {
+            font-size: 14px;
+            color: #90a4ae;
+        }
+
+        /* Pulse animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .active-dot {
+            width: 10px;
+            height: 10px;
+            background: #00ff88;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #00ff88;
+            animation: pulse 2s infinite;
+            display: inline-block;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">⬡ SUCCESS LOBBY</div>
+        <button class="btn-back" onclick="goBack()">← BACK</button>
+    </div>
+
+    <!-- Profile card -->
+    <div class="profile-card">
+
+        <!-- Avatar, name, level -->
+        <div class="profile-header">
+            <img class="profile-avatar" id="profile-avatar" src="" alt="avatar" />
+            <div class="profile-name" id="profile-name">Maria G.</div>
+            <div class="profile-level">⚡ <span id="profile-level">Level 4</span></div>
+            <div class="compatibility" id="compatibility">⚡ 92% MATCH</div>
+        </div>
+
+        <!-- About section -->
+        <div class="section-title">// About</div>
+
+        <div class="info-row">
+            <div class="info-icon">🎯</div>
+            <div>
+                <div class="info-label">GOAL</div>
+                <div class="info-text" id="info-goal">Find a study partner</div>
+            </div>
+        </div>
+
+        <div class="info-row">
+            <div class="info-icon">📚</div>
+            <div>
+                <div class="info-label">STUDY STYLE</div>

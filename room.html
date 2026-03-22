@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Success Lobby - Room</title>
+    <!-- Room page - where students study together -->
+    <style>
+        /* Import futuristic fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap');
+
+        /* Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* Dark cyberpunk background with grid */
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #050d1a;
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* ── HEADER ── */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            font-weight: 900;
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+            letter-spacing: 2px;
+        }
+
+        /* Back button to return to lobby */
+        .btn-back {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            color: #00ffff;
+            border: 1px solid #00ffff;
+            background: transparent;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            letter-spacing: 2px;
+            transition: all 0.2s;
+        }
+
+        .btn-back:hover {
+            background: rgba(0, 255, 255, 0.15);
+            box-shadow: 0 0 10px rgba(0,255,255,0.3);
+        }
+
+        /* ── ROOM TITLE ── */
+        .room-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 26px;
+            font-weight: 900;
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+            margin-bottom: 4px;
+        }
+
+        .room-subtitle {
+            font-size: 15px;
+            color: #90a4ae;
+            margin-bottom: 24px;
+        }
+
+        /* ── SAFE ZONE TOGGLE ── */
+        /* Lets you switch between In-Person and Virtual */
+        .toggle-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .toggle-btn {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            padding: 8px 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            background: transparent;
+            color: #90a4ae;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+        }
+
+        /* Active toggle glows neon */
+        .toggle-btn.active {
+            border-color: #00ffff;
+            color: #00ffff;
+            background: rgba(0, 255, 255, 0.1);
+            box-shadow: 0 0 10px rgba(0,255,255,0.2);
+        }
+
+        /* ── SAFE ZONE INFO ── */
+        .safe-zone-card {
+            background: linear-gradient(135deg, #0a1628, #0d2137);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .safe-zone-icon {
+            font-size: 24px;
+        }
+
+        .safe-zone-info { flex: 1; }
+
+        .safe-zone-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            color: #00ffff;
+            margin-bottom: 2px;
+        }
+
+        .safe-zone-location {
+            font-size: 13px;
+            color: #90a4ae;
+        }
+
+        /* ── SECTION TITLE ── */
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: #00ffff;
+            margin-bottom: 16px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* ── STUDENTS GRID ── */
+        /* Grid of students currently in the lobby */
+        .students-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 14px;
+            margin-bottom: 30px;
+        }
+
+        /* Each student card */
+        .student-card {
+            background: linear-gradient(135deg, #0a1628, #0d2137);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .student-card:hover {
+            border-color: #00ffff;
+            box-shadow: 0 0 16px rgba(0, 255, 255, 0.15);
+        }
+
+        /* Student avatar circle */
+        .student-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            font-weight: 900;
+            margin: 0 auto 10px;
+            box-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
+        }
+
+        .student-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .student-level {
+            font-size: 12px;
+            color: #90a4ae;
+            margin-bottom: 10px;
+        }
+
+        /* Connect button on each student card */
+        .btn-connect {
+            width: 100%;
+            padding: 7px;
+            background: transparent;
+            border: 1px solid #00ffff;
+            color: #00ffff;
+            border-radius: 6px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+        }
+
+        .btn-connect:hover {
+            background: rgba(0, 255, 255, 0.15);
+            box-shadow: 0 0 10px rgba(0,255,255,0.3);
+        }
+
+        /* Pulse animation for active dots */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .active-dot {
+            width: 10px;
+            height: 10px;
+            background: #00ff88;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #00ff88;
+            animation: pulse 2s infinite;
+            display: inline-block;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header with back button -->
+    <div class="header">
+        <div class="logo">⬡ SUCCESS LOBBY</div>
+        <button class="btn-back" onclick="goBack()">← BACK</button>
+    </div>
+
+    <!-- Room title - shows the course code -->
+    <div class="room-title" id="room-title">CSC-151</div>
+    <div class="room-subtitle" id="room-subtitle">Java Programming — Study Room</div>
+
+    <!-- Toggle between In-Person and Virtual -->
+    <div class="toggle-container">
+        <button class="toggle-btn active" onclick="setMode('inperson', this)">
+            📍 IN-PERSON
+        </button>
+        <button class="toggle-btn" onclick="setMode('virtual', this)">
+            💻 VIRTUAL
+        </button>
+    </div>
+
+    <!-- Safe zone location info -->
+    <div class="safe-zone-card" id="safe-zone-card">
+        <div class="safe-zone-icon">🛡️</div>
+        <div class="safe-zone-info">
+            <div class="safe-zone-name">SAFE ZONE — Central Campus Library</div>
+            <div class="safe-zone-location">📍 Building A, Room 114 — Monitored Area</div>
+        </div>
+    </div>
+
+    <div class="section-title">// Students In This Lobby</div>
+
+    <!-- Grid of students currently studying -->
+    <div class="students-grid" id="students-grid"></div>
+
+    <script>
+        /* Get the course code and username from localStorage */
+        const courseCode = localStorage.getItem('current-course') || 'CSC-151';
+        const userName = localStorage.getItem('cpcc-user') || 'STUDENT';
+
+        /* Show the course info at the top */
+        document.getElementById('room-title').textContent = courseCode;
+
+const courseNames = {
+    'CSC-151': 'Java Programming',
+    'MAT-171': 'Precalculus Algebra',
+    'ENG-111': 'Writing & Inquiry',
+    'BUS-110': 'Introduction to Business',
+    'PSY-150': 'General Psychology',
+    'ACC-120': 'Principles of Accounting'
+};
+document.getElementById('room-subtitle').textContent = (courseNames[courseCode] || courseCode) + ' — Study Room';
+
+        /* List of fake students in the lobby - makes it feel alive */
+        const students = [
+            { name: 'Maria G.', level: 4, color: '#00ffff' },
+            { name: 'James T.', level: 2, color: '#9600ff' },
+            { name: 'Priya K.', level: 6, color: '#ffc800' },
+            { name: 'Carlos R.', level: 3, color: '#00ff88' },
+            { name: userName.toUpperCase(), level: 3, color: '#00ffff' },
+        ];
+
+        /* Creates a card for each student */
+        function renderStudents() {
+            const grid = document.getElementById('students-grid');
+            grid.innerHTML = '';
+
+            students.forEach(student => {
+                grid.innerHTML += `
+                    <div class="student-card">
+                        <div class="student-avatar" style="background: linear-gradient(135deg, ${student.color}33, ${student.color}66); color: ${student.color};">
+                            ${student.name.charAt(0)}
+                        </div>
+                        <div class="student-name">
+                            <span class="active-dot"></span>${student.name}
+                        </div>
+                        <div class="student-level">⚡ Level ${student.level}</div>
+                      <button class="btn-connect" onclick="connect('${student.name}', '${student.level}')">
+                            CONNECT
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        /* Switches between In-Person and Virtual mode */
+        function setMode(mode, btn) {
+            /* Remove active from all buttons */
+            document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+            /* Add active to clicked button */
+            btn.classList.add('active');
+
+            const card = document.getElementById('safe-zone-card');
+
+            if (mode === 'inperson') {
+                card.innerHTML = `
+                    <div class="safe-zone-icon">🛡️</div>
+                    <div class="safe-zone-info">
+                        <div class="safe-zone-name">SAFE ZONE — Central Campus Library</div>
+                        <div class="safe-zone-location">📍 Building A, Room 114 — Monitored Area</div>
+                    </div>
+                `;
+            } else {
+                card.innerHTML = `
+                    <div class="safe-zone-icon">💻</div>
+                    <div class="safe-zone-info">
+                        <div class="safe-zone-name">VIRTUAL ROOM — Microsoft Teams</div>
+                        <div class="safe-zone-location">🔗 Click to join the virtual session</div>
+                    </div>
+                `;
+            }
+        }
+
+        /* What happens when you click CONNECT on a student */
+      function connect(name, level) {
+    localStorage.setItem('view-student', name);
+    localStorage.setItem('view-student-level', level);
+    window.location.href = 'profile.html';
+}
+
+        /* Goes back to the lobby */
+        function goBack() {
+            window.location.href = 'Lobby.html';
+        }
+
+        /* Load students when page opens */
+        renderStudents();
+    </script>
+
+</body>
+</html>

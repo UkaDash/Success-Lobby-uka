@@ -1,26 +1,32 @@
-import json
-import os
 import re
 import bcrypt
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
+from models import db, User
 
 app = Flask(__name__)
 CORS(app)
 
-USERS_FILE = "users.json"
+#DB config
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///successlobby.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db.init_app(app)
 
+#create successlobby.db
+with app.app_context():
+    db.create_all()
 
+#html route
 @app.route("/")
 def index():
     return send_file("cpcc_login.html")
 
 @app.route("/quiz")
-def quiz_page():
+def quiz():
     return send_file("quiz.html")
 
 @app.route("/lobby")
-def lobby_page():
+def lobby():
     return send_file("lobby.html")
 
 @app.route("/room")
@@ -28,25 +34,13 @@ def room():
     return send_file("room.html")
 
 @app.route("/profile")
-def profile_page():
+def profile():
     return send_file("profile.html")
 
-def load_users():
-    if not os.path.exists(USERS_FILE):
-        return {}
-    with open(USERS_FILE, "r") as f:
-        return json.load(f)
-
-
-def save_users(users):
-    with open(USERS_FILE, "w") as f:
-        json.dump(users, f, indent=2)
-
-
+#api routes
 @app.route("/api/health")
 def health():
     return jsonify({"success": True, "message": "Server is running!"})
-
 
 @app.route("/api/register", methods=["POST"])
 def register():
@@ -78,19 +72,15 @@ def register():
     if password != confirm:
         return jsonify({"success": False, "message": "Passwords dont match"})
 
-    users = load_users()
-
-    if email in users:
+    if User.query.filter_by(email=email).first():
         return jsonify({"success": False, "message": "Email already registered", "hint": "login"})
 
     hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
 
-    users[email] = {
-        "name": name,
-        "email": email,
-        "password": hashed
-    }
-    save_users(users)
+    #save to DB
+    new_user = User(name=name, email=email, password=hashed)
+    db.session.add(new_user)
+    db.session.commit()
 
     return jsonify({"success": True, "message": f"Account created! Welcome, {name}.", "name": name, "email": email})
 
@@ -111,18 +101,15 @@ def login():
     if not password:
         return jsonify({"success": False, "message": "Password is required"})
 
-    users = load_users()
+    user = User.query.filter_by(email=email).first()
 
-    if email not in users:
+    if not user:
         return jsonify({"success": False, "message": "No account found, register first", "hint": "register"})
 
-    user = users[email]
-
-    if not bcrypt.checkpw(password.encode(), user["password"].encode()):
+    if not bcrypt.checkpw(password.encode(), user.password.encode()):
         return jsonify({"success": False, "message": "Wrong password"})
 
-    return jsonify({"success": True, "message": f"Welcome back, {user['name']}!", "name": user["name"], "email": user["email"]})
-
+    return jsonify({"success": True, "message": f"Welcome back, {user.name}!", "name": user.name, "email": user.email})
 
 if __name__ == "__main__":
     print("Server running at http://127.0.0.1:5000")

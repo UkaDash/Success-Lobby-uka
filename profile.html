@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Success Lobby - Student Profile</title>
-    <!-- Profile page - shows student info when you click CONNECT -->
+    <title>The Success Lobby - Profile</title>
+    <!-- font -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap');
 
         /* Reset */
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        /* background */
         body {
             font-family: 'Rajdhani', sans-serif;
             background: #050d1a;
             color: white;
             min-height: 100vh;
             padding: 20px;
-            background-image: 
+            background-image:
                 linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
             background-size: 40px 40px;
@@ -38,209 +39,245 @@
             font-size: 20px;
             font-weight: 900;
             color: #00ffff;
-            text-shadow: 0 0 10px #00ffff;
+            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
             letter-spacing: 2px;
         }
 
-        .btn-back {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 11px;
+        .user-tag {
+            font-size: 13px;
             color: #00ffff;
             border: 1px solid #00ffff;
-            background: transparent;
-            padding: 6px 14px;
+            padding: 4px 12px;
             border-radius: 20px;
-            cursor: pointer;
-            letter-spacing: 2px;
-            transition: all 0.2s;
+            box-shadow: 0 0 8px rgba(0,255,255,0.3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .btn-back:hover {
-            background: rgba(0, 255, 255, 0.15);
-            box-shadow: 0 0 10px rgba(0,255,255,0.3);
-        }
-
-        /* Main profile card */
-        .profile-card {
-            max-width: 500px;
-            margin: 0 auto;
+        /* player-card */
+        .card {
             background: linear-gradient(135deg, #0a1628, #0d2137);
             border: 1px solid rgba(0, 255, 255, 0.3);
             border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
-        }
-
-        /* Avatar and name at the top */
-        .profile-header {
-            text-align: center;
+            padding: 20px;
             margin-bottom: 24px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
         }
 
-        .profile-avatar {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            box-shadow: 0 0 20px rgba(0,255,255,0.5);
-            margin-bottom: 14px;
-        }
-
-        .profile-name {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 20px;
-            font-weight: 900;
-            color: white;
-            margin-bottom: 4px;
-        }
-
-        .profile-level {
-            font-size: 14px;
-            color: #00ffff;
-            margin-bottom: 12px;
-        }
-
-        /* Compatibility score */
-        .compatibility {
-            display: inline-block;
-            background: rgba(0, 255, 136, 0.15);
-            border: 1px solid #00ff88;
-            color: #00ff88;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 12px;
-            padding: 4px 14px;
-            border-radius: 20px;
-            box-shadow: 0 0 8px rgba(0,255,136,0.3);
-        }
-
-        /* Section divider */
+        /* section title */
         .section-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 11px;
+            font-size: 13px;
+            font-weight: 700;
             color: #00ffff;
+            margin-bottom: 16px;
             letter-spacing: 3px;
             text-transform: uppercase;
-            margin-bottom: 12px;
-            margin-top: 24px;
         }
 
-        /* Info rows */
-        .info-row {
+        /* Avatar */
+        .profile-top {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 10px 14px;
-            background: rgba(0, 255, 255, 0.05);
-            border: 1px solid rgba(0, 255, 255, 0.1);
-            border-radius: 8px;
-            margin-bottom: 8px;
+            gap: 16px;
+            margin-bottom: 6px;
         }
 
-        .info-icon {
-            font-size: 18px;
-            width: 24px;
-            text-align: center;
-        }
-
-        .info-text {
-            font-size: 14px;
-            color: #cdd9e5;
-        }
-
-        .info-label {
-            font-size: 11px;
-            color: #90a4ae;
-            margin-bottom: 2px;
-        }
-
-        /* Badges row */
-        .badges {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 8px;
-        }
-
-        .badge {
-            font-size: 11px;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-weight: 600;
-        }
-
-        .badge-cyan {
-            background: rgba(0, 255, 255, 0.15);
-            border: 1px solid #00ffff;
-            color: #00ffff;
-        }
-
-        .badge-gold {
-            background: rgba(255, 200, 0, 0.15);
-            border: 1px solid #ffc800;
-            color: #ffc800;
-        }
-
-        /* Connect button */
-        .btn-connect {
-            width: 100%;
-            margin-top: 24px;
-            padding: 14px;
-            background: linear-gradient(90deg, rgba(0,255,255,0.2), rgba(0,102,255,0.2));
-            border: 1px solid #00ffff;
-            color: #00ffff;
-            border-radius: 8px;
+        .player-name {
             font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .player-email {
             font-size: 13px;
+            color: #90a4ae;
+            margin-top: 4px;
+        }
+
+        /* Form labels */
+        .field-label {
+            font-size: 12px;
+            color: #00ffff;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            margin-top: 16px;
+        }
+
+        /* input style */
+        select, input[type="text"] {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            background: #0d1b2a;
+            color: white;
+            font-size: 14px;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        select:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #00ffff;
+            box-shadow: 0 0 8px rgba(0,255,255,0.2);
+        }
+
+        /* Dropdown arrow color */
+        select option {
+            background: #0d1b2a;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid #00ffff;
+            color: #00ffff;
+            border-radius: 6px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
             font-weight: 700;
             cursor: pointer;
             letter-spacing: 2px;
             transition: all 0.2s;
+            margin-top: 16px;
         }
 
-        .btn-connect:hover {
-            background: linear-gradient(90deg, rgba(0,255,255,0.3), rgba(0,102,255,0.3));
-            box-shadow: 0 0 20px rgba(0,255,255,0.3);
+        .btn:hover {
+            background: rgba(0, 255, 255, 0.15);
+            box-shadow: 0 0 12px rgba(0,255,255,0.3);
         }
 
-        /* Success message after connecting */
-        .success-msg {
-            display: none;
-            text-align: center;
-            margin-top: 20px;
-            padding: 16px;
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid #00ff88;
+        /* Button width */
+        .btn-full {
+            width: 100%;
+        }
+
+        /* remove button */
+        .course-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
             border-radius: 8px;
+            margin-bottom: 8px;
         }
 
-        .success-msg .xp-gain {
+        .course-row-left {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course-row-code {
             font-family: 'Orbitron', sans-serif;
-            font-size: 22px;
-            color: #00ff88;
-            text-shadow: 0 0 10px #00ff88;
-            margin-bottom: 6px;
+            font-size: 13px;
+            color: #00ffff;
         }
 
-        .success-msg p {
-            font-size: 14px;
+        .course-row-name {
+            font-size: 12px;
             color: #90a4ae;
+            margin-top: 2px;
         }
 
-        /* Pulse animation */
+        /*  */
+        .btn-remove {
+            padding: 4px 12px;
+            background: transparent;
+            border: 1px solid #ff4444;
+            color: #ff4444;
+            border-radius: 6px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+        }
+
+        .btn-remove:hover {
+            background: rgba(255, 68, 68, 0.15);
+        }
+
+        /* Add course row */
+        .add-course-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .add-course-row input {
+            flex: 1;
+        }
+
+        .add-course-row button {
+            margin-top: 0;
+            white-space: nowrap;
+        }
+
+        /* Green dot pulse */
+        .active-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #00ff88;
+            animation: pulse 2s infinite;
+            display: inline-block;
+        }
+
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.4; }
         }
 
-        .active-dot {
-            width: 10px;
-            height: 10px;
-            background: #00ff88;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #00ff88;
-            animation: pulse 2s infinite;
-            display: inline-block;
-            margin-right: 6px;
-            vertical-align: middle;
+        /* Status message */
+        .status-msg {
+            font-size: 13px;
+            color: #00ff88;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Back to lobby link */
+        .back-link {
+            font-size: 13px;
+            color: #90a4ae;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .back-link:hover {
+            color: #00ffff;
+        }
+
+        /* Empty courses message */
+        .no-courses {
+            font-size: 13px;
+            color: #90a4ae;
+            padding: 10px 0;
+        }
+        /* textarea */
+        textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            background: #0d1b2a;
+            color: white;
+            font-size: 14px;
+            font-family: 'Rajdhani', sans-serif;
+            resize: vertical;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #00ffff;
+            box-shadow: 0 0 8px rgba(0,255,255,0.2);
         }
     </style>
 </head>
@@ -249,59 +286,273 @@
     <!-- Header -->
     <div class="header">
         <div class="logo">⬡ SUCCESS LOBBY</div>
-        <button class="btn-back" onclick="goBack()">← BACK</button>
-    </div>
-
-    <!-- Profile card -->
-    <div class="profile-card">
-
-        <!-- Avatar, name, level -->
-        <div class="profile-header">
-            <img class="profile-avatar" id="profile-avatar" src="" alt="avatar" />
-            <div class="profile-name" id="profile-name">Maria G.</div>
-            <div class="profile-level">⚡ <span id="profile-level">Level 4</span></div>
-            <div class="compatibility" id="compatibility">⚡ 92% MATCH</div>
-        </div>
-
-        <!-- About section -->
-        <div class="section-title">// About</div>
-
-        <div class="info-row">
-            <div class="info-icon">🎯</div>
-            <div>
-                <div class="info-label">GOAL</div>
-                <div class="info-text" id="info-goal">Find a study partner</div>
-            </div>
-        </div>
-
-        <div class="info-row">
-            <div class="info-icon">📚</div>
-            <div>
-                <div class="info-label">STUDY STYLE</div>
-     <div class="info-text" id="info-style">Visual & Group Study</div>
-            </div>
-        </div>
-
-        <button class="btn-connect" onclick="document.getElementById('success-msg').style.display='block'">CONNECT</button>
-
-        <div class="success-msg" id="success-msg">
-            <div class="xp-gain">+50 XP</div>
-            <p>Connection request sent!</p>
+        <div class="user-tag">
+            <span class="active-dot"></span>
+            <span id="display-user">STUDENT</span>
         </div>
     </div>
+
+    <!-- Avatar + name + email -->
+    <div class="card">
+        <div class="section-title">// My Profile</div>
+        <div class="profile-top">
+            <img id="avatar-img" style="width:64px; height:64px; border-radius:50%; box-shadow: 0 0 16px rgba(0,255,255,0.5);" />
+            <div>
+                <div class="player-name" id="player-name">STUDENT</div>
+                <div class="player-email" id="player-email">—</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit profile info -->
+    <div class="card">
+        <div class="section-title">// Study Info</div>
+
+        <div class="field-label">Major</div>
+        <select id="major">
+            <option value="">-- Select --</option>
+            <option value="Business & Accounting">Business & Accounting</option>
+            <option value="Information Technology">Information Technology</option>
+            <option value="Health Sciences">Health Sciences</option>
+            <option value="Public Safety & Human Services">Public Safety & Human Services</option>
+            <option value="Arts & Humanities">Arts & Humanities</option>
+            <option value="Engineering & Technology">Engineering & Technology</option>
+        </select>
+
+        <div class="field-label">Availability</div>
+        <select id="availability">
+            <option value="">-- Select --</option>
+            <option value="morning">Morning</option>
+            <option value="afternoon">Afternoon</option>
+            <option value="evening">Evening</option>
+        </select>
+
+        <div class="field-label">Preferred Campus Location</div>
+        <select id="campus">
+            <option value="">-- Select --</option>
+            <option value="Central Campus">Central Campus</option>
+            <option value="Harris Campus">Harris Campus</option>
+            <option value="Levine Campus">Levine Campus</option>
+            <option value="Merancas Campus">Merancas Campus</option>
+            <option value="Harper Campus">Harper Campus</option>
+            <option value="Online">Online</option>
+        </select>
+        <!--Bio field-->>
+        <div class="field-label">Study Bio</div>
+        <textarea 
+            id="bio"
+            rows="4"
+            placeholder="e.g. I'm good at Java but struggling with recursion. I like studying in groups in the morning..."
+            style="width:100%; padding:10px 14px; border-radius:8px; border:1px solid rgba(0,255,255,0.3); background:#0d1b2a; color:white; font-size:14px; font-family:'Rajdhani',sans-serif; resize:vertical;"
+        ></textarea>
+
+        <button class="btn btn-full" onclick="saveProfile()">SAVE PROFILE</button>
+        <div class="status-msg" id="save-status">✓ Profile saved!</div>
+    </div>
+
+    <!-- Enrolled courses -->
+    <div class="card">
+        <div class="section-title">// My Courses</div>
+
+        <!-- List of enrolled courses -->
+        <div id="courses-list">
+            <div class="no-courses">No courses added yet.</div>
+        </div>
+
+        <!-- Add a course -->
+        <div class="add-course-row">
+            <input type="text" id="course-code-input" placeholder="Type course code (e.g. CSC-151)" oninput="lookupCourse(this.value)" />
+            <input type="text" id="course-name-input" placeholder="Course name" readonly />
+            <button class="btn" id="btn-add" onclick="addCourse()" disabled>+ ADD</button>
+        </div>
+        <div class="status-msg" id="course-status">✓ Course added!</div>
+    </div>
+
+    <!-- Back to lobby -->
+    <button class="btn btn-full" onclick="window.location.href='/lobby'">ENTER LOBBY →</button>
 
     <script>
-        // THIS FUNCTION MAKES THE BACK BUTTON WORK
-        function goBack() {
-            window.location.href = '/room';
+        /* Get user info from localStorage - same as lobby.html */
+        const userName = localStorage.getItem('cpcc-user') || 'STUDENT';
+        const userEmail = localStorage.getItem('cpcc-email') || '';
+
+        /* If not logged in, send back to login */
+        if (!userEmail) {
+            window.location.href = '/';
         }
 
-        // This part makes sure the name "Maria G." or others show up
-        const urlParams = new URLSearchParams(window.location.search);
-        const studentName = urlParams.get('name') || 'Student';
-        document.getElementById('profile-name').textContent = studentName;
-        document.getElementById('profile-avatar').src = `https://api.dicebear.com/7.x/pixel-art/svg?seed=${studentName}`;
+        /* Show name and email at the top */
+        document.getElementById('display-user').textContent = userName.toUpperCase();
+        document.getElementById('player-name').textContent = userName.toUpperCase();
+        document.getElementById('player-email').textContent = userEmail;
+
+        /* Show avatar using dicebear  */
+        document.getElementById('avatar-img').src = `https://api.dicebear.com/7.x/pixel-art/svg?seed=${userName}`;
+
+        /* Load profile info from the database when page opens */
+        function loadProfile() {
+            fetch(`http://127.0.0.1:5000/api/profile?email=${userEmail}`)
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+                if (data.success) {
+                    /* Fill in the saved profile fields */
+                    document.getElementById('major').value = data.major;
+                    document.getElementById('availability').value = data.availability;
+                    document.getElementById('campus').value = data.campus;
+                    document.getElementById('bio').value = data.bio;
+
+                    /* Render the courses list */
+                    renderCourses(data.courses);
+                }
+            })
+            .catch(function() {
+                console.log('Could not load profile.');
+            });
+        }
+
+        /* Save profile info to the database */
+        function saveProfile() {
+            const major = document.getElementById('major').value;
+            const availability = document.getElementById('availability').value;
+            const campus = document.getElementById('campus').value;
+            const bio = document.getElementById('bio').value;
+
+            fetch('http://127.0.0.1:5000/api/profile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: userEmail, major: major, availability: availability, campus: campus ,bio: bio})
+            })
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+                /* Show green success message */
+                const msg = document.getElementById('save-status');
+                msg.textContent = data.success ? '✓ Profile saved!' : '✗ ' + data.message;
+                msg.style.color = data.success ? '#00ff88' : '#ff4444';
+                msg.style.display = 'block';
+
+                /* Profile saved dissapear after 2 seconds */
+                setTimeout(function() { msg.style.display = 'none'; }, 2000);
+            })
+            .catch(function() {
+                alert('Cannot connect to server. Is app.py running?');
+            });
+        }
+
+        /* Show the list of enrolled courses */
+        function renderCourses(courses) {
+            const list = document.getElementById('courses-list');
+
+            if (courses.length === 0) {
+                list.innerHTML = '<div class="no-courses">No courses added yet.</div>';
+                return;
+            }
+
+            list.innerHTML = '';
+            courses.forEach(function(course) {
+                list.innerHTML += `
+                    <div class="course-row">
+                        <div class="course-row-left">
+                            <div class="course-row-code">${course.code}</div>
+                            <div class="course-row-name">${course.name}</div>
+                        </div>
+                        <button class="btn-remove" onclick="removeCourse('${course.code}')">REMOVE</button>
+                    </div>
+                `;
+            });
+        }
+
+        /* Add a course */
+        function addCourse() {
+            const code = document.getElementById('course-code-input').value.trim();
+            const name = document.getElementById('course-name-input').value.trim();
+
+            if (!code || !name) {
+                alert('Please enter both course code and name.');
+                return;
+            }
+
+            fetch('http://127.0.0.1:5000/api/courses/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: userEmail, course_code: code, course_name: name })
+            })
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+                const msg = document.getElementById('course-status');
+                msg.textContent = data.success ? '✓ ' + data.message : '✗ ' + data.message;
+                msg.style.color = data.success ? '#00ff88' : '#ff4444';
+                msg.style.display = 'block';
+                setTimeout(function() { msg.style.display = 'none'; }, 2000);
+
+                if (data.success) {
+                    /* Clear inputs and reload the courses list */
+                    document.getElementById('course-code-input').value = '';
+                    document.getElementById('course-name-input').value = '';
+                    loadProfile();
+                }
+            })
+            .catch(function() {
+                alert('Cannot connect to server. Is app.py running?');
+            });
+        }
+
+        /* Remove a course */
+        function removeCourse(code) {
+            fetch('http://127.0.0.1:5000/api/courses/remove', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: userEmail, course_code: code })
+            })
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+                if (data.success) {
+                    loadProfile(); /* Reload courses list after removing */
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(function() {
+                alert('Cannot connect to server. Is app.py running?');
+            });
+        }
+
+
+        
+        /* Load everything when the page opens */
+        loadProfile();
+
+
+    /*Lookup course code from JSON*/
+    function lookupCourse(value) {
+        const code = value.trim().toUpperCase();
+        const nameInput = document.getElementById('course-name-input');
+        const addBtn = document.getElementById('btn-add');
+        const msg = document.getElementById('course-status');
+
+        if (code.length < 3) {
+            nameInput.value = '';
+            addBtn.disabled = true;
+            msg.style.display = 'none';
+            return;
+        }
+
+        fetch(`http://127.0.0.1:5000/api/courses/lookup?code=${code}`)
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+            if (data.success) {
+                nameInput.value = data.name;   /* auto fill name */
+                addBtn.disabled = false;        /* enable ADD button */
+                msg.style.display = 'none';
+            } else {
+                nameInput.value = '';
+                addBtn.disabled = true;
+                msg.textContent = '✗ Course not found';
+                msg.style.color = '#ff4444';
+                msg.style.display = 'block';
+            }
+        });
+    }    
     </script>
 
 </body>
-</html>           
+</html>
